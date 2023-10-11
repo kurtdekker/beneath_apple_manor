@@ -44,6 +44,8 @@
   312 GOTO 320
   320 EXP=0:PSM=20:PS=20:PIM=20:PI=20:PDM=20:PD=20:PBM=20:PB=20:PA=0:PW=0
   330 BSS=20:BSI=20:BSD=20:BSB=20:BSE=0
+' RL is in linear addresses, X / Y where Y must be multiplied by Height
+' RW and RH are just stacks of height/width
   340 DIM RL(20),RW(20),RH(20)
   350 DIM RF(20)
   360 DIM SDL(20)
@@ -56,12 +58,16 @@
   420 IF PF<20 THEN PF=20
   430 CALL -936: PRINT : PRINT "NOW BUILDING: ROOMS...": GOSUB 2510
   440 FOR I=1 TO NR
+' room position (linear address)
   450 RL(I)= RND (H*V): IF MAP(RL(I))#0 THEN 450
+' room size
   460 RW(I)= RND (5)+2:RH(I)= RND (3)+2
   470 X=RL(I) MOD H
   480 Y=RL(I)/H
+' does the room fit?
   490 IF X+RW(I)>=H THEN 450
   500 IF Y+RH(I)>=V THEN 450
+' Iterates the map trying to fit every corner of the room in
   510 J=X
   520 K=Y
   530 IF MAP(K*H+J)#0 THEN 450
